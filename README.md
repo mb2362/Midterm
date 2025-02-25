@@ -1,1 +1,1 @@
-This repository is for the Midterm
+This repository is for the Midterm of WSD.
