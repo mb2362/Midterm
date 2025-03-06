@@ -1,44 +1,21 @@
+from decimal import Decimal
+from typing import Callable
+from calculator.operations import add, subtract, multiply, divide
+
 class Calculation:
-    """
-    A class to represent a calculation operation.
-
-    This class stores two numbers (a and b) and an operation function,
-    then performs the operation on the two numbers and returns the result.
-
-    Attributes:
-    -----------
-    a : float
-        The first number for the operation.
-    b : float
-        The second number for the operation.
-    operation : function
-        The function that performs the arithmetic operation (e.g., add, subtract, multiply, divide).
-    """
-
-    def __init__(self, a, b, operation):
-        """
-        Initialize the Calculation object with two numbers and an operation function.
-
-        Parameters:
-        -----------
-        a (float): The first number for the operation.
-        b (float): The second number for the operation.
-        operation (function): The function to perform the arithmetic operation.
-        """
+    def __init__(self, a: Decimal, b: Decimal, operation: Callable[[Decimal, Decimal], Decimal]):
         self.a = a
         self.b = b
-        self.operation = operation  # Store the operation function
+        self.operation = operation
+    
+    @staticmethod    
+    def create(a: Decimal, b: Decimal, operation: Callable[[Decimal, Decimal], Decimal]):
+        return Calculation(a, b, operation)
 
-    def get_result(self):
-        """
-        Perform the stored operation on the two numbers.
-
-        Calls the operation function (e.g., add, subtract, multiply, divide) 
-        with the two numbers (a and b) and returns the result.
-
-        Returns:
-        --------
-        float: The result of applying the operation on a and b.
-        """
-        # Call the stored operation with a and b
+    def perform(self) -> Decimal:
+        """Perform the stored calculation and return the result."""
         return self.operation(self.a, self.b)
+
+    def __repr__(self):
+        """Return a simplified string representation of the calculation."""
+        return f"Calculation({self.a}, {self.b}, {self.operation.__name__})"

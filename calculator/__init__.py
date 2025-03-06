@@ -1,5 +1,10 @@
-from calculator.calculation import Calculation
-from calculator.operations import add, subtract, multiply, divide
+"""Calculator"""
+# Import necessary modules and classes
+from calculator.calculations import Calculations  # Manages history of calculations
+from calculator.operations import add, subtract, multiply, divide  # Arithmetic operations
+from calculator.calculation import Calculation  # Represents a single calculation
+from decimal import Decimal  # For high-precision arithmetic
+from typing import Callable  # For type hinting callable objects
 
 class Calculator:
     """
@@ -7,6 +12,15 @@ class Calculator:
     The operations include addition, subtraction, multiplication, and division.
     Each operation is performed using the Calculation class to ensure modularity and maintainability.
     """
+    @staticmethod
+    def _perform_operation(a: Decimal, b: Decimal, operation: Callable[[Decimal, Decimal], Decimal]) -> Decimal:
+        """Create and perform a calculation, then return the result."""
+        # Create a Calculation object using the static create method, passing in operands and the operation
+        calculation = Calculation.create(a, b, operation)
+        # Add the calculation to the history managed by the Calculations class
+        Calculations.add_calculation(calculation)
+        # Perform the calculation and return the result
+        return calculation.perform()
 
     @staticmethod
     def add(a, b):
@@ -20,9 +34,8 @@ class Calculator:
         Returns:
         float: The result of adding a and b.
         """
-        # Create a Calculation object for the addition operation
-        calculation = Calculation(a, b, add)  # Pass the add function from calculator.operations
-        return calculation.get_result()  # Return the result from the Calculation object
+        # Perform addition by delegating to the _perform_operation method with the add operation
+        return Calculator._perform_operation(a, b, add)
 
     @staticmethod
     def subtract(a, b):
@@ -36,9 +49,8 @@ class Calculator:
         Returns:
         float: The result of subtracting b from a.
         """
-        # Create a Calculation object for the subtraction operation
-        calculation = Calculation(a, b, subtract)  # Pass the subtract function from calculator.operations
-        return calculation.get_result()  # Return the result from the Calculation object
+        # Perform subtraction by delegating to the _perform_operation method with the subtract operation
+        return Calculator._perform_operation(a, b, subtract)
 
     @staticmethod
     def multiply(a, b):
@@ -52,9 +64,8 @@ class Calculator:
         Returns:
         float: The result of multiplying a and b.
         """
-        # Create a Calculation object for the multiplication operation
-        calculation = Calculation(a, b, multiply)  # Pass the multiply function from calculator.operations
-        return calculation.get_result()  # Return the result from the Calculation object
+        # Perform multiplication by delegating to the _perform_operation method with the multiply operation
+        return Calculator._perform_operation(a, b, multiply)
 
     @staticmethod
     def divide(a, b):
@@ -71,6 +82,5 @@ class Calculator:
         Raises:
         ZeroDivisionError: If the denominator (b) is zero.
         """
-        # Create a Calculation object for the division operation
-        calculation = Calculation(a, b, divide)  # Pass the divide function from calculator.operations
-        return calculation.get_result()  # Return the result from the Calculation object
+        # Perform division by delegating to the _perform_operation method with the divide operation
+        return Calculator._perform_operation(a, b, divide)
