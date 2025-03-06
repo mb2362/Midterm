@@ -1,60 +1,20 @@
-# Calculator
-def add(a, b):
-    """
-    Add two numbers.
+from calculator.calculation import Calculation
+from calculator.operations import add, subtract, multiply, divide
 
-    Parameters:
-    a (int or float): The first number.
-    b (int or float): The second number.
-
-    Returns:
-    int or float: The sum of a and b.
-    """
-    return a + b
-
-
-def subtract(a, b):
-    """
-    Subtract one number from another.
-
-    Parameters:
-    a (int or float): The number to subtract from.
-    b (int or float): The number to subtract.
-
-    Returns:
-    int or float: The result of a - b.
-    """
-    return a - b
-
-
-def divide(a, b):
-    """
-    Divide one number by another.
-
-    Parameters:
-    a (int or float): The numerator.
-    b (int or float): The denominator.
-
-    Returns:
-    float: The result of a / b.
-
-    Raises:
-    ZeroDivisionError: If b is zero.
-    """
-    if b == 0:
-        raise ZeroDivisionError("Division by zero is not allowed.")
-    return a / b
-
-
-def multiply(a, b):
-    """
-    Multiply two numbers.
-
-    Parameters:
-    a (int or float): The first number.
-    b (int or float): The second number.
-
-    Returns:
-    int or float: The product of a and b.
-    """
-    return a * b
+class Calculator:
+    @staticmethod
+    def add(a,b):
+        calculation = Calculation(a, b, add)  # Pass the add function from calculator.operations
+        return calculation.get_result()
+    @staticmethod
+    def subtract(a,b):
+        calculation = Calculation(a, b, subtract)  # Pass the add function from calculator.operations
+        return calculation.get_result()
+    @staticmethod
+    def multiply (a,b):
+        calculation = Calculation(a, b, multiply)  # Pass the add function from calculator.operations
+        return calculation.get_result()
+    @staticmethod
+    def divide(a,b):
+        calculation = Calculation(a, b, divide)  # Pass the add function from calculator.operations
+        return calculation.get_result()
