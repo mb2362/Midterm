@@ -1,60 +1,86 @@
-# Calculator
-def add(a, b):
+"""Calculator"""
+# Import necessary modules and classes
+from calculator.calculations import Calculations  # Manages history of calculations
+from calculator.operations import add, subtract, multiply, divide  # Arithmetic operations
+from calculator.calculation import Calculation  # Represents a single calculation
+from decimal import Decimal  # For high-precision arithmetic
+from typing import Callable  # For type hinting callable objects
+
+class Calculator:
     """
-    Add two numbers.
-
-    Parameters:
-    a (int or float): The first number.
-    b (int or float): The second number.
-
-    Returns:
-    int or float: The sum of a and b.
+    A simple calculator class that performs basic arithmetic operations.
+    The operations include addition, subtraction, multiplication, and division.
+    Each operation is performed using the Calculation class to ensure modularity and maintainability.
     """
-    return a + b
+    @staticmethod
+    def _perform_operation(a: Decimal, b: Decimal, operation: Callable[[Decimal, Decimal], Decimal]) -> Decimal:
+        """Create and perform a calculation, then return the result."""
+        # Create a Calculation object using the static create method, passing in operands and the operation
+        calculation = Calculation.create(a, b, operation)
+        # Add the calculation to the history managed by the Calculations class
+        Calculations.add_calculation(calculation)
+        # Perform the calculation and return the result
+        return calculation.perform()
 
+    @staticmethod
+    def add(a, b):
+        """
+        Perform addition of two numbers.
 
-def subtract(a, b):
-    """
-    Subtract one number from another.
+        Parameters:
+        a (float): The first number to add.
+        b (float): The second number to add.
 
-    Parameters:
-    a (int or float): The number to subtract from.
-    b (int or float): The number to subtract.
+        Returns:
+        float: The result of adding a and b.
+        """
+        # Perform addition by delegating to the _perform_operation method with the add operation
+        return Calculator._perform_operation(a, b, add)
 
-    Returns:
-    int or float: The result of a - b.
-    """
-    return a - b
+    @staticmethod
+    def subtract(a, b):
+        """
+        Perform subtraction of two numbers.
 
+        Parameters:
+        a (float): The number to subtract from.
+        b (float): The number to subtract.
 
-def divide(a, b):
-    """
-    Divide one number by another.
+        Returns:
+        float: The result of subtracting b from a.
+        """
+        # Perform subtraction by delegating to the _perform_operation method with the subtract operation
+        return Calculator._perform_operation(a, b, subtract)
 
-    Parameters:
-    a (int or float): The numerator.
-    b (int or float): The denominator.
+    @staticmethod
+    def multiply(a, b):
+        """
+        Perform multiplication of two numbers.
 
-    Returns:
-    float: The result of a / b.
+        Parameters:
+        a (float): The first number to multiply.
+        b (float): The second number to multiply.
 
-    Raises:
-    ZeroDivisionError: If b is zero.
-    """
-    if b == 0:
-        raise ZeroDivisionError("Division by zero is not allowed.")
-    return a / b
+        Returns:
+        float: The result of multiplying a and b.
+        """
+        # Perform multiplication by delegating to the _perform_operation method with the multiply operation
+        return Calculator._perform_operation(a, b, multiply)
 
+    @staticmethod
+    def divide(a, b):
+        """
+        Perform division of two numbers.
 
-def multiply(a, b):
-    """
-    Multiply two numbers.
+        Parameters:
+        a (float): The numerator (dividend).
+        b (float): The denominator (divisor).
 
-    Parameters:
-    a (int or float): The first number.
-    b (int or float): The second number.
+        Returns:
+        float: The result of dividing a by b.
 
-    Returns:
-    int or float: The product of a and b.
-    """
-    return a * b
+        Raises:
+        ZeroDivisionError: If the denominator (b) is zero.
+        """
+        # Perform division by delegating to the _perform_operation method with the divide operation
+        return Calculator._perform_operation(a, b, divide)
