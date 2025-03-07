@@ -1,25 +1,36 @@
 
-# Intermediate Python Calculator
+---
+
+# Advanced Python Calculator
 
 ## Overview
-This project is a **Intermediate Python-based Calculator** designed for a software engineering graduate course midterm. It follows professional software development practices, including clean code structure, modular design, and comprehensive test coverage.
+This project is an **Advanced Python-based Calculator** designed for a software engineering graduate course midterm. It follows professional software development practices, including clean code structure, modular design, comprehensive test coverage.
 
 ## Features
 - **Basic Arithmetic Operations**: Addition, Subtraction, Multiplication, Division
+- **Advanced Calculation Management**: Tracks calculations using a structured approach
 - **Test Coverage**: 95%+ test coverage using **Pytest**
-- **Error Handling**: Graceful handling of edge cases like division by zero.
+- **Error Handling**: Graceful handling of exceptions like division by zero
+- **Modular Design**: Separated concerns using `operations.py`, `calculation.py`, and `calculations.py`
 
 ## Project Structure
 ```
 MIDTERM
+│── .github/                # GitHub workflows (if applicable)
+│── .pytest_cache/          # Pytest cache files
 │── calculator/             # Core calculator logic
+│   ├── __pycache__/
 │   ├── __init__.py
-│   ├── operations.py      # Functions for arithmetic operations
-│   ├── calculation.py     # Main calculation logic (new file)
+│   ├── calculation.py      # Main calculation logic
+│   ├── calculations.py     # Handles multiple calculations
+│   ├── operations.py       # Functions for arithmetic operations
 │── tests/                  # Unit tests
+│   ├── __pycache__/
 │   ├── __init__.py
-│   ├── test_calculator.py  # Test cases for the calculator
-│   ├── test_operations.py      # Test cases for operations (new file)
+│   ├── test_calculation.py  # Tests for single calculation logic
+│   ├── test_calculations.py # Tests for multiple calculations handling
+│   ├── test_calculator.py   # Tests for overall calculator
+│   ├── test_operations.py   # Tests for operations functions
 │── venv/                   # Virtual environment
 │── .coverage               # Coverage report file
 │── .gitignore              # Git ignored files
@@ -27,7 +38,6 @@ MIDTERM
 │── pytest.ini              # Pytest configuration
 │── README.md               # Project documentation
 │── requirements.txt        # Project dependencies
-
 ```
 
 ## Installation
@@ -70,11 +80,17 @@ pytest --cov=calculator tests/
   ```sh
   pytest --cov=calculator
   ```
-
 - The **`.coverage`** file stores coverage reports and can be used for further analysis.
+
+## Exception Handling
+This project implements **"Look Before You Leap" (LBYL)** and **"Easier to Ask for Forgiveness than Permission" (EAFP)** exception-handling strategies:
+- **LBYL**: Checks before division by zero.
+- **EAFP**: Uses try-except blocks to handle errors dynamically.
 
 ## License
 This project is for academic purposes only.
 
 ## Author
 **Monil Baxi**
+
+---
