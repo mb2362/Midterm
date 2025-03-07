@@ -6,10 +6,10 @@ from unittest.mock import patch
 import pytest   # pylint: disable=unused-import
 from app import App
 from app.commands import CommandHandler, CLI
-from app.commands.add import addCommand
-from app.commands.subtract import subtractCommand
-from app.commands.multiply import multiplyCommand
-from app.commands.divide import divideCommand
+from app.plugins.add import addCommand
+from app.plugins.subtract import subtractCommand
+from app.plugins.multiply import multiplyCommand
+from app.plugins.divide import divideCommand
 
 def test_app_init():
     """Test that the App initializes with a CommandHandler."""
@@ -23,10 +23,13 @@ def test_app_start_menu_command():
         with pytest.raises(SystemExit):  # Exit after calling 'exit'
             app.start()
     # Verify that the menu command is recognized
-    mock_print.assert_any_call("Type 'exit' to exit or 'menu' to enter menu section.")
-    mock_print.assert_any_call("Available commands: add, subtract, multiply, divide, menu, exit\n")  # ✅ Correct output
-    mock_print.assert_any_call("Commands should be in this format: add 5 3\n")  # ✅ Additional menu info
-    mock_print.assert_any_call("Exiting...")  # ✅ Correct exit message
+    # Verify that the menu command is recognized
+    mock_print.assert_any_call("Available Commands:")   # Correct output
+    mock_print.assert_any_call("- add <a> <b>: Perform addition")  # Additional menu info
+    mock_print.assert_any_call("- subtract <a> <b>: Perform subtraction")  # Subtraction menu info
+    mock_print.assert_any_call("- multiply <a> <b>: Perform multiplication")    # Multiplication menu info
+    mock_print.assert_any_call("- divide <a> <b>: Perform division")    # Division menu info
+    mock_print.assert_any_call("- exit: Exit the application")  # Correct exit message
 
 def test_app_invalid_command():
     """Test handling of an invalid command."""
