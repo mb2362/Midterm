@@ -1,5 +1,9 @@
 """
 Unit tests for command classes in the CLI calculator application.
+
+These tests ensure that commands like 'add', 'subtract', 'multiply', and 'divide' 
+are correctly handled by the app. The tests also cover cases of invalid inputs, 
+missing arguments, and proper error handling during command execution.
 """
 
 from unittest.mock import patch
@@ -14,6 +18,7 @@ from app.plugins.divide import divideCommand
 def test_app_init():
     """Test that the App initializes with a CommandHandler."""
     app = App()
+    # Ensure the CommandHandler is initialized correctly
     assert app.command_handler is not None
 
 def test_app_start_menu_command():
@@ -22,14 +27,13 @@ def test_app_start_menu_command():
     with patch("builtins.input", side_effect=["menu", "exit"]), patch("builtins.print") as mock_print:
         with pytest.raises(SystemExit):  # Exit after calling 'exit'
             app.start()
-    # Verify that the menu command is recognized
-    # Verify that the menu command is recognized
-    mock_print.assert_any_call("Available Commands:")   # Correct output
-    mock_print.assert_any_call("- add <a> <b>: Perform addition")  # Additional menu info
-    mock_print.assert_any_call("- subtract <a> <b>: Perform subtraction")  # Subtraction menu info
-    mock_print.assert_any_call("- multiply <a> <b>: Perform multiplication")    # Multiplication menu info
-    mock_print.assert_any_call("- divide <a> <b>: Perform division")    # Division menu info
-    mock_print.assert_any_call("- exit: Exit the application")  # Correct exit message
+    # Verify that the menu command is recognized and outputs the correct menu
+    mock_print.assert_any_call("Available Commands:")
+    mock_print.assert_any_call("- add <a> <b>: Perform addition")  # Addition command info
+    mock_print.assert_any_call("- subtract <a> <b>: Perform subtraction")  # Subtraction command info
+    mock_print.assert_any_call("- multiply <a> <b>: Perform multiplication")  # Multiplication command info
+    mock_print.assert_any_call("- divide <a> <b>: Perform division")  # Division command info
+    mock_print.assert_any_call("- exit: Exit the application")  # Exit command info
 
 def test_app_invalid_command():
     """Test handling of an invalid command."""
@@ -96,9 +100,9 @@ def test_add_command_missing_arguments(capfd):
     assert out == "Usage: add <a> <b>\n"
 
 def test_add_command_length(capfd):
-    """Test addCommand with missing arguments."""
+    """Test addCommand with a single argument."""
     command = addCommand()
-    command.execute(["5"])
+    command.execute(["5"])  # Only one argument
     out, _ = capfd.readouterr()
     assert out == "Usage: add <a> <b>\n"
 
@@ -112,7 +116,7 @@ def test_add_command_invalid_argument(capfd):
 def test_divide_command_length(capfd):
     """Test divideCommand with missing arguments."""
     command = divideCommand()
-    command.execute(["5"])
+    command.execute(["5"])  # Missing second argument
     out, _ = capfd.readouterr()
     assert out == "Usage: divide <a> <b>\n"
 
@@ -138,9 +142,9 @@ def test_multiply_command_missing_arguments(capfd):
     assert out == "Usage: multiply <a> <b>\n"
 
 def test_multiply_command_length(capfd):
-    """Test multiplyCommand with missing arguments."""
+    """Test multiplyCommand with a single argument."""
     command = multiplyCommand()
-    command.execute(["5"])
+    command.execute(["5"])  # Only one argument
     out, _ = capfd.readouterr()
     assert out == "Usage: multiply <a> <b>\n"
 
@@ -159,9 +163,9 @@ def test_subtract_command_missing_arguments(capfd):
     assert out == "Usage: subtract <a> <b>\n"
 
 def test_subtract_command_length(capfd):
-    """Test subtractCommand with missing arguments."""
+    """Test subtractCommand with a single argument."""
     command = subtractCommand()
-    command.execute(["5"])
+    command.execute(["5"])  # Only one argument
     out, _ = capfd.readouterr()
     assert out == "Usage: subtract <a> <b>\n"
 
