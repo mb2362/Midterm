@@ -17,9 +17,12 @@ def setup_calculations():
     Clears any existing history and adds sample calculations to ensure
     consistent testing conditions.
     """
-    Calculations.clear_history()  # Reset history before tests
-    Calculations.add_calculation(Calculation(Decimal('10'), Decimal('5'), add))  # Add an addition calculation
-    Calculations.add_calculation(Calculation(Decimal('20'), Decimal('3'), subtract))  # Add a subtraction calculation
+    # Reset history before each test
+    Calculations.clear_history()
+
+    # Add an addition and a subtraction calculation to the history
+    Calculations.add_calculation(Calculation(Decimal('10'), Decimal('5'), add))
+    Calculations.add_calculation(Calculation(Decimal('20'), Decimal('3'), subtract))
 
 def test_add_calculation(setup_calculations):
     """
@@ -28,8 +31,11 @@ def test_add_calculation(setup_calculations):
     Ensures that a new calculation is correctly added to the history
     and becomes the latest calculation.
     """
-    calc = Calculation(Decimal('2'), Decimal('2'), add)  # Create a new addition calculation
-    Calculations.add_calculation(calc)  # Add calculation to history
+    # Create a new addition calculation
+    calc = Calculation(Decimal('2'), Decimal('2'), add)
+    # Add the calculation to the history
+    Calculations.add_calculation(calc)
+    # Ensure the latest calculation is the one just added
     assert Calculations.get_latest() == calc, "Failed to add the calculation to the history"
 
 def test_get_history(setup_calculations):
@@ -38,7 +44,9 @@ def test_get_history(setup_calculations):
 
     Ensures that the history contains the expected number of calculations.
     """
-    history = Calculations.get_history()  # Retrieve history
+    # Retrieve the full history
+    history = Calculations.get_history()
+    # Assert that there are 2 calculations in the history (from the fixture)
     assert len(history) == 2, "History does not contain the expected number of calculations"
 
 def test_clear_history(setup_calculations):
@@ -47,7 +55,9 @@ def test_clear_history(setup_calculations):
 
     Ensures that all stored calculations are removed from history.
     """
-    Calculations.clear_history()  # Clear history
+    # Clear the history
+    Calculations.clear_history()
+    # Assert that the history is now empty
     assert len(Calculations.get_history()) == 0, "History was not cleared"
 
 def test_get_latest(setup_calculations):
@@ -56,7 +66,9 @@ def test_get_latest(setup_calculations):
 
     Ensures that the most recently added calculation is returned as the latest.
     """
-    latest = Calculations.get_latest()  # Retrieve latest calculation
+    # Retrieve the latest calculation
+    latest = Calculations.get_latest()
+    # Assert that the latest calculation has the expected operands
     assert latest.a == Decimal('20') and latest.b == Decimal('3'), "Did not get the correct latest calculation"
 
 def test_find_by_operation(setup_calculations):
@@ -65,10 +77,14 @@ def test_find_by_operation(setup_calculations):
 
     Ensures that calculations are correctly filtered based on operation names.
     """
-    add_operations = Calculations.find_by_operation("add")  # Find all additions
+    # Find all addition calculations
+    add_operations = Calculations.find_by_operation("add")
+    # Assert that there's one addition operation in the history
     assert len(add_operations) == 1, "Did not find the correct number of calculations with add operation"
 
-    subtract_operations = Calculations.find_by_operation("subtract")  # Find all subtractions
+    # Find all subtraction calculations
+    subtract_operations = Calculations.find_by_operation("subtract")
+    # Assert that there's one subtraction operation in the history
     assert len(subtract_operations) == 1, "Did not find the correct number of calculations with subtract operation"
 
 def test_get_latest_with_empty_history():
@@ -77,5 +93,7 @@ def test_get_latest_with_empty_history():
 
     Ensures that `get_latest()` correctly returns None when no calculations exist.
     """
-    Calculations.clear_history()  # Ensure history is empty
+    # Clear the history to ensure it's empty
+    Calculations.clear_history()
+    # Assert that the latest calculation is None when the history is empty
     assert Calculations.get_latest() is None, "Expected None for latest calculation with empty history"

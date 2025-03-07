@@ -1,86 +1,126 @@
-"""Calculator"""
+"""Calculator Module.
+
+This module defines the `Calculator` class, which provides basic arithmetic 
+operations (addition, subtraction, multiplication, and division). Each operation 
+is performed using the `Calculation` class to ensure modularity and maintainability.
+"""
+
 # Import necessary modules and classes
+from decimal import Decimal  # For high-precision arithmetic
+from typing import Callable  # For type hinting callable objects
+
+# Import arithmetic operations and calculation management classes
 from calculator.calculations import Calculations  # Manages history of calculations
 from calculator.operations import add, subtract, multiply, divide  # Arithmetic operations
 from calculator.calculation import Calculation  # Represents a single calculation
-from decimal import Decimal  # For high-precision arithmetic
-from typing import Callable  # For type hinting callable objects
 
 class Calculator:
     """
     A simple calculator class that performs basic arithmetic operations.
-    The operations include addition, subtraction, multiplication, and division.
-    Each operation is performed using the Calculation class to ensure modularity and maintainability.
+
+    This class supports:
+    - Addition
+    - Subtraction
+    - Multiplication
+    - Division
+
+    Each operation is performed using the `Calculation` class, ensuring modularity 
+    and maintainability. All calculations are stored in history using `Calculations`.
     """
+
     @staticmethod
     def _perform_operation(a: Decimal, b: Decimal, operation: Callable[[Decimal, Decimal], Decimal]) -> Decimal:
-        """Create and perform a calculation, then return the result."""
-        # Create a Calculation object using the static create method, passing in operands and the operation
+        """
+        Create and perform a calculation, then return the result.
+
+        This method:
+        1. Creates a `Calculation` object.
+        2. Adds it to the history using `Calculations`.
+        3. Executes the operation and returns the result.
+
+        Parameters:
+        -----------
+        a (Decimal): The first operand.
+        b (Decimal): The second operand.
+        operation (Callable[[Decimal, Decimal], Decimal]): The function representing the operation.
+
+        Returns:
+        --------
+        Decimal: The result of the operation.
+        """
+        # Create a Calculation object
         calculation = Calculation.create(a, b, operation)
-        # Add the calculation to the history managed by the Calculations class
+        # Store the calculation in history
         Calculations.add_calculation(calculation)
         # Perform the calculation and return the result
         return calculation.perform()
 
     @staticmethod
-    def add(a, b):
+    def add(a: Decimal, b: Decimal) -> Decimal:
         """
         Perform addition of two numbers.
 
         Parameters:
-        a (float): The first number to add.
-        b (float): The second number to add.
+        -----------
+        a (Decimal): The first number to add.
+        b (Decimal): The second number to add.
 
         Returns:
-        float: The result of adding a and b.
+        --------
+        Decimal: The result of adding `a` and `b`.
         """
-        # Perform addition by delegating to the _perform_operation method with the add operation
         return Calculator._perform_operation(a, b, add)
 
     @staticmethod
-    def subtract(a, b):
+    def subtract(a: Decimal, b: Decimal) -> Decimal:
         """
         Perform subtraction of two numbers.
 
         Parameters:
-        a (float): The number to subtract from.
-        b (float): The number to subtract.
+        -----------
+        a (Decimal): The number to subtract from.
+        b (Decimal): The number to subtract.
 
         Returns:
-        float: The result of subtracting b from a.
+        --------
+        Decimal: The result of subtracting `b` from `a`.
         """
-        # Perform subtraction by delegating to the _perform_operation method with the subtract operation
         return Calculator._perform_operation(a, b, subtract)
 
     @staticmethod
-    def multiply(a, b):
+    def multiply(a: Decimal, b: Decimal) -> Decimal:
         """
         Perform multiplication of two numbers.
 
         Parameters:
-        a (float): The first number to multiply.
-        b (float): The second number to multiply.
+        -----------
+        a (Decimal): The first number to multiply.
+        b (Decimal): The second number to multiply.
 
         Returns:
-        float: The result of multiplying a and b.
+        --------
+        Decimal: The result of multiplying `a` and `b`.
         """
-        # Perform multiplication by delegating to the _perform_operation method with the multiply operation
         return Calculator._perform_operation(a, b, multiply)
 
     @staticmethod
-    def divide(a, b):
+    def divide(a: Decimal, b: Decimal) -> Decimal:
         """
         Perform division of two numbers.
 
         Parameters:
-        a (float): The numerator (dividend).
-        b (float): The denominator (divisor).
+        -----------
+        a (Decimal): The numerator (dividend).
+        b (Decimal): The denominator (divisor).
 
         Returns:
-        float: The result of dividing a by b.
+        --------
+        Decimal: The result of dividing `a` by `b`.
 
         Raises:
-        ZeroDivisionError: If the denominator (b) is zero.
+        -------
+        ZeroDivisionError: If `b` is zero.
         """
-        # Perform division by delegating to the _perform_operation method with the divide operation
+        if b == Decimal('0'):
+            raise ZeroDivisionError("Cannot divide by zero.")
         return Calculator._perform_operation(a, b, divide)

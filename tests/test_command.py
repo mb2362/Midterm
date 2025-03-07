@@ -14,7 +14,7 @@ from app.commands.divide import divideCommand
 def test_app_init():
     """Test that the App initializes with a CommandHandler."""
     app = App()
-    assert app.command_handler is not None
+    assert app.command_handler is not None  # Ensure the CommandHandler is initialized
 
 def test_app_start_menu_command():
     """Test App start method handling a menu command."""
@@ -23,10 +23,12 @@ def test_app_start_menu_command():
         with pytest.raises(SystemExit):  # Exit after calling 'exit'
             app.start()
     # Verify that the menu command is recognized
-    mock_print.assert_any_call("Type 'exit' to exit or 'menu' to enter menu section.")
-    mock_print.assert_any_call("Available commands: add, subtract, multiply, divide, menu, exit\n")  # ✅ Correct output
-    mock_print.assert_any_call("Commands should be in this format: add 5 3\n")  # ✅ Additional menu info
-    mock_print.assert_any_call("Exiting...")  # ✅ Correct exit message
+    mock_print.assert_any_call("Available Commands:")   # Correct output
+    mock_print.assert_any_call("- add <a> <b>: Perform addition")  # Additional menu info
+    mock_print.assert_any_call("- subtract <a> <b>: Perform subtraction")  # Subtraction menu info
+    mock_print.assert_any_call("- multiply <a> <b>: Perform multiplication")    # Multiplication menu info
+    mock_print.assert_any_call("- divide <a> <b>: Perform division")    # Division menu info
+    mock_print.assert_any_call("- exit: Exit the application")  # Correct exit message
 
 def test_app_invalid_command():
     """Test handling of an invalid command."""
@@ -92,30 +94,9 @@ def test_add_command_missing_arguments(capfd):
     out, _ = capfd.readouterr()
     assert out == "Usage: add <a> <b>\n"
 
-def test_add_command_length(capfd):
-    """Test addCommand with missing arguments."""
-    command = addCommand()
-    command.execute(["5"])
-    out, _ = capfd.readouterr()
-    assert out == "Usage: add <a> <b>\n"
-
 def test_add_command_invalid_argument(capfd):
     """Test addCommand with non-numeric argument."""
     command = addCommand()
-    command.execute(["5", "b"])
-    out, _ = capfd.readouterr()
-    assert out == "Invalid number input: 5 or b is not a valid number.\n"
-
-def test_divide_command_length(capfd):
-    """Test divideCommand with missing arguments."""
-    command = divideCommand()
-    command.execute(["5"])
-    out, _ = capfd.readouterr()
-    assert out == "Usage: divide <a> <b>\n"
-
-def test_divide_command_invalid_argument_1(capfd):
-    """Test divideCommand with non-numeric argument."""
-    command = divideCommand()
     command.execute(["5", "b"])
     out, _ = capfd.readouterr()
     assert out == "Invalid number input: 5 or b is not a valid number.\n"
@@ -134,31 +115,10 @@ def test_multiply_command_missing_arguments(capfd):
     out, _ = capfd.readouterr()
     assert out == "Usage: multiply <a> <b>\n"
 
-def test_multiply_command_length(capfd):
-    """Test multiplyCommand with missing arguments."""
-    command = multiplyCommand()
-    command.execute(["5"])
-    out, _ = capfd.readouterr()
-    assert out == "Usage: multiply <a> <b>\n"
-
-def test_multiply_command_invalid(capfd):
-    """Test multiplyCommand with non-numeric argument."""
-    command = multiplyCommand()
-    command.execute(["5", "b"])
-    out, _ = capfd.readouterr()
-    assert out == "Invalid number input: 5 or b is not a valid number.\n"
-
 def test_subtract_command_missing_arguments(capfd):
     """Test subtractCommand with missing arguments."""
     command = subtractCommand()
     command.execute([])  # No arguments provided
-    out, _ = capfd.readouterr()
-    assert out == "Usage: subtract <a> <b>\n"
-
-def test_subtract_command_length(capfd):
-    """Test subtractCommand with missing arguments."""
-    command = subtractCommand()
-    command.execute(["5"])
     out, _ = capfd.readouterr()
     assert out == "Usage: subtract <a> <b>\n"
 

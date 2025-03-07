@@ -1,22 +1,43 @@
 '''My Calculator Test'''
+
+# Import the Calculator class from the calculator module
 from calculator import Calculator
 
 def test_addition():
     '''Test that the addition function correctly adds two numbers.'''
-    # Testing addition of two positive numbers (2 + 2)
-    assert Calculator.add(2, 2) == 4  # The expected result is 4
+    # Test with two positive numbers (2 + 2)
+    result = Calculator.add(2, 2)  # Perform addition
+    assert result == 4, f"Expected 4, but got {result}"  # Assert the expected result
 
 def test_subtraction():
     '''Test that the subtraction function correctly subtracts two numbers.'''
-    # Testing subtraction of two equal numbers (2 - 2)
-    assert Calculator.subtract(2, 2) == 0  # The expected result is 0
+    # Test with two equal numbers (2 - 2)
+    result = Calculator.subtract(2, 2)  # Perform subtraction
+    assert result == 0, f"Expected 0, but got {result}"  # Assert the expected result
 
 def test_multiply():
     '''Test that the multiplication function correctly multiplies two numbers.'''
-    # Testing multiplication of two positive numbers (2 * 2)
-    assert Calculator.multiply(2, 2) == 4  # The expected result is 4
+    # Test with two positive numbers (2 * 2)
+    result = Calculator.multiply(2, 2)  # Perform multiplication
+    assert result == 4, f"Expected 4, but got {result}"  # Assert the expected result
 
 def test_divide():
     '''Test that the division function correctly divides two numbers.'''
-    # Testing division of two equal numbers (2 / 2)
-    assert Calculator.divide(2, 2) == 1  # The expected result is 1
+    # Test with two equal numbers (2 / 2)
+    result = Calculator.divide(2, 2)  # Perform division
+    assert result == 1, f"Expected 1, but got {result}"  # Assert the expected result
+
+    # Test division by a non-zero number (4 / 2)
+    result = Calculator.divide(4, 2)  # Perform division
+    assert result == 2, f"Expected 2, but got {result}"  # Assert the expected result
+
+    # Test division by a non-zero decimal number (10 / 2.5)
+    result = Calculator.divide(10, 2.5)  # Perform division
+    assert result == 4, f"Expected 4, but got {result}"  # Assert the expected result
+
+    # Test division by zero (should raise ZeroDivisionError)
+    try:
+        Calculator.divide(5, 0)  # Attempt division by zero
+        assert False, "Expected ZeroDivisionError, but no exception was raised."
+    except ZeroDivisionError:
+        pass  # Correct behavior, no action needed

@@ -1,8 +1,11 @@
-''' Operations tests'''
+'''Operations tests'''
+
+# Import the necessary functions from the calculator operations module
 from calculator.operations import add, subtract, multiply, divide
 
 def test_addition():
     '''Test that the addition function correctly adds two numbers.'''
+    # Testing addition of various cases
     assert add(2, 2) == 4  # Testing positive integers
     assert add(-1, 1) == 0  # Testing addition of a negative and positive number
     assert add(0, 0) == 0  # Testing addition of zeros
@@ -12,6 +15,7 @@ def test_addition():
 
 def test_subtraction():
     '''Test that the subtraction function correctly subtracts two numbers.'''
+    # Testing subtraction of various cases
     assert subtract(2, 2) == 0  # Testing subtraction of equal numbers
     assert subtract(5, 3) == 2  # Testing positive integers
     assert subtract(0, 5) == -5  # Testing subtraction with a negative result
@@ -20,6 +24,7 @@ def test_subtraction():
 
 def test_divide():
     '''Test that the division function correctly divides two numbers.'''
+    # Testing division of various cases
     assert divide(2, 2) == 1  # Testing basic division
     assert divide(10, 2) == 5  # Testing division of integers
     assert divide(5, 2) == 2.5  # Testing division resulting in floating-point numbers
@@ -30,6 +35,7 @@ def test_divide():
 
 def test_multiply():
     '''Test that the multiplication function correctly multiplies two numbers.'''
+    # Testing multiplication of various cases
     assert multiply(2, 2) == 4  # Basic multiplication
     assert multiply(-1, 5) == -5  # Testing multiplication with negative numbers
     assert multiply(0, 100) == 0  # Multiplication with zero
@@ -39,6 +45,7 @@ def test_multiply():
 
 def test_edge_cases():
     '''Test edge cases for arithmetic operations.'''
+    # Edge cases for addition, subtraction, multiplication, and division
     assert add(1e10, 1e10) == 2e10  # Adding large numbers
     assert subtract(-1e10, 1e10) == -2e10  # Subtraction with large values
     assert multiply(1e5, 1e5) == 1e10  # Multiplying large values
@@ -49,9 +56,9 @@ def test_division_by_zero():
     '''Test that division by zero raises a ZeroDivisionError.'''
     try:
         divide(5, 0)
-        assert False  # If no error is raised, fail the test
+        assert False, "Expected ZeroDivisionError, but no exception was raised."
     except ZeroDivisionError:
-        assert True  # Expecting ZeroDivisionError to be raised
+        pass  # Correct behavior, no action needed
 
 def test_large_numbers():
     '''Test operations with very large numbers.'''

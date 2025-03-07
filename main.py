@@ -1,14 +1,36 @@
-# main.py
-from app import App   
-import sys
-from calculator import Calculator
-from calculator.calculation import Calculation
+"""
+Main script for running the calculator application.
+
+This script parses command-line arguments, performs calculations using the Calculator class,
+and handles exceptions gracefully.
+"""
+
+# Import required modules
+import sys  # Import sys for command-line argument handling
+from app import App  # Import App class for starting the application
+from calculator import Calculator  # Import Calculator class for arithmetic operations
+from calculator.calculation import Calculation  # Import Calculation class for managing individual calculations
 
 def parse_args(args):
     """
-    Parses the command-line arguments.
-    Expected arguments: a, b, operation
-    Returns a tuple (a, b, operation) with a and b as floats if valid.
+    Parses command-line arguments.
+
+    Expected arguments:
+    - a (str): The first operand (should be a valid number).
+    - b (str): The second operand (should be a valid number).
+    - operation (str): The arithmetic operation (add, subtract, multiply, divide).
+
+    Parameters:
+    -----------
+    args (list): List of command-line arguments excluding the script name.
+
+    Returns:
+    --------
+    tuple: (a, b, operation) where a and b are converted to floats.
+
+    Raises:
+    -------
+    ValueError: If arguments are missing or invalid.
     """
     if len(args) != 3:
         raise ValueError("Please provide exactly three arguments: a, b, and operation.")
@@ -16,8 +38,8 @@ def parse_args(args):
     a_str, b_str, operation = args
 
     try:
-        a = float(a_str)
-        b = float(b_str)
+        a = float(a_str)  # Convert first argument to float
+        b = float(b_str)  # Convert second argument to float
     except ValueError:
         raise ValueError(f"Invalid number input: {a_str} or {b_str} is not a valid number.")
     
@@ -25,7 +47,22 @@ def parse_args(args):
 
 def perform_operation(a, b, operation):
     """
-    Maps the operation string to the corresponding Calculator method.
+    Performs the specified arithmetic operation.
+
+    Parameters:
+    -----------
+    a (float): The first operand.
+    b (float): The second operand.
+    operation (str): The operation to perform (add, subtract, multiply, divide).
+
+    Returns:
+    --------
+    float: The result of the arithmetic operation.
+
+    Raises:
+    -------
+    ValueError: If an unknown operation is provided.
+    ZeroDivisionError: If attempting to divide by zero.
     """
     if operation == 'add':
         return Calculator.add(a, b)
@@ -42,8 +79,14 @@ def perform_operation(a, b, operation):
         raise ValueError(f"Unknown operation: {operation}")
 
 def main():
+    """
+    Main function to handle command-line execution.
+
+    It parses arguments, performs calculations, and displays the result.
+    Handles errors gracefully to provide user-friendly messages.
+    """
     try:
-        # Exclude the script name and Parse arguments
+        # Exclude the script name and parse arguments
         a, b, operation = parse_args(sys.argv[1:])
         result = perform_operation(a, b, operation)
         print(f"The result of {int(a)} {operation} {int(b)} is equal to {result}")
@@ -51,6 +94,10 @@ def main():
         print(f"An error occurred: {e}")
 
 if __name__ == "__main__":
+    """
+    Entry point of the program.
 
+    If executed directly, it starts the App instance and runs the command-line calculator.
+    """
     app = App()
     app.start()
