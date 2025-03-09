@@ -6,7 +6,11 @@ to display the available commands in the application.
 """
 
 # Import CLI as the base class for commands
+import logging
 from app.commands import CLI  
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 class menuCommand(CLI):
     """
@@ -28,6 +32,7 @@ class menuCommand(CLI):
         -----------
         args (list): List of arguments (not used in this command).
         """
+        logger.info("Menu command executed. Displaying available commands.")
         print("Available Commands:")
         print("- add <a> <b>: Perform addition")
         print("- subtract <a> <b>: Perform subtraction")

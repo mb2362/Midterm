@@ -5,6 +5,10 @@ This module contains the basic arithmetic operations (addition, subtraction, mul
 Each operation is implemented as a function and performs the operation on two numbers.
 """
 
+# Configure logger
+import logging
+logger = logging.getLogger(__name__)
+
 def add(a, b):
     """
     Add two numbers.
@@ -22,7 +26,9 @@ def add(a, b):
     --------
     add(2, 3) -> 5
     """
-    return a + b
+    result = a + b
+    logger.debug(f"Performed addition: {a} + {b} = {result}")
+    return result
 
 
 def subtract(a, b):
@@ -42,7 +48,9 @@ def subtract(a, b):
     --------
     subtract(5, 2) -> 3
     """
-    return a - b
+    result = a - b
+    logger.debug(f"Performed subtraction: {a} - {b} = {result}")
+    return result
 
 
 def divide(a, b):
@@ -68,8 +76,11 @@ def divide(a, b):
     divide(5, 0) -> Raises ZeroDivisionError
     """
     if b == 0:
+        logger.error(f"Attempted division by zero: {a} / {b}")
         raise ZeroDivisionError("Division by zero is not allowed.")
-    return a / b
+    result = a / b
+    logger.debug(f"Performed division: {a} / {b} = {result}")
+    return result
 
 
 def multiply(a, b):
@@ -89,4 +100,6 @@ def multiply(a, b):
     --------
     multiply(3, 4) -> 12
     """
-    return a * b
+    result = a * b
+    logger.debug(f"Performed multiplication: {a} * {b} = {result}")
+    return result

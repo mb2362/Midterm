@@ -6,10 +6,14 @@ to handle multiplication operations in the command-line interface.
 """
 
 # Import CLI as the base class for commands
+import logging
 from app.commands import CLI  
 
 # Import Calculator to perform arithmetic operations
 from calculator import Calculator  
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 class multiplyCommand(CLI):
     """
@@ -41,14 +45,17 @@ class multiplyCommand(CLI):
         - Handles ValueError if inputs are not valid numbers.
         """
         if len(args) != 2:
-            print("Usage: multiply <a> <b>")  # Inform the user of correct command format
+            logger.warning("Invalid number of arguments passed to multiply command.")
+            print("Usage: multiply <a> <b>")
             return
 
         try:
             a = float(args[0])  # Convert first argument to float
             b = float(args[1])  # Convert second argument to float
             result = Calculator.multiply(a, b)  # Perform multiplication using Calculator
-            print(f"The result of {int(a)} x {int(b)} is equal to {result}")  # Display result
+            logger.info(f"Multiplication operation performed: {a} x {b} = {result}")
+            print(f"The result of {int(a)} x {int(b)} is equal to {result}")
 
         except ValueError:
-            print(f"Invalid number input: {args[0]} or {args[1]} is not a valid number.")  # Handle invalid input
+            logger.error(f"Invalid number input: {args[0]} or {args[1]} is not a valid number.")
+            print(f"Invalid number input: {args[0]} or {args[1]} is not a valid number.")

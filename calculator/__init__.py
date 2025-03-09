@@ -7,12 +7,16 @@ is performed using the `Calculation` class to ensure modularity and maintainabil
 
 # Import necessary modules and classes
 from decimal import Decimal  # For high-precision arithmetic
+import logging
 from typing import Callable  # For type hinting callable objects
 
 # Import arithmetic operations and calculation management classes
 from calculator.calculations import Calculations  # Manages history of calculations
 from calculator.operations import add, subtract, multiply, divide  # Arithmetic operations
 from calculator.calculation import Calculation  # Represents a single calculation
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 class Calculator:
     """
@@ -48,12 +52,16 @@ class Calculator:
         --------
         Decimal: The result of the operation.
         """
-        # Create a Calculation object
-        calculation = Calculation.create(a, b, operation)
-        # Store the calculation in history
-        Calculations.add_calculation(calculation)
-        # Perform the calculation and return the result
-        return calculation.perform()
+        logger.info(f"Performing operation: {operation.__name__}({a}, {b})")
+        try:
+            calculation = Calculation.create(a, b, operation)
+            Calculations.add_calculation(calculation)
+            result = calculation.perform()
+            logger.info(f"Operation successful: {operation.__name__}({a}, {b}) = {result}")
+            return result
+        except Exception as e:
+            logger.error(f"Error performing {operation.__name__}({a}, {b}): {e}")
+            raise
 
     @staticmethod
     def add(a: Decimal, b: Decimal) -> Decimal:
@@ -122,5 +130,6 @@ class Calculator:
         ZeroDivisionError: If `b` is zero.
         """
         if b == Decimal('0'):
+            logger.error("Attempted division by zero.")
             raise ZeroDivisionError("Cannot divide by zero.")
         return Calculator._perform_operation(a, b, divide)

@@ -1,8 +1,12 @@
 import importlib
+import logging
 import os
 from app.commands import CommandHandler
 
 PLUGIN_FOLDER = "app.plugins"
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 def load_plugins():
     """
@@ -43,11 +47,10 @@ def load_plugins():
                 # Register the command class if found
                 if command_class:
                     command_handler.register_command(folder, command_class())  # Register the command
+                    logger.info(f"Successfully loaded plugin: {module_name} -> {command_class_name}")
                 else:
-                    # Warn if the expected command class is not found
-                    print(f"⚠ Warning: {command_class_name} not found in {module_name}")
+                    logger.warning(f"⚠ Warning: {command_class_name} not found in {module_name}")
             except Exception as e:
-                # Catch and log any exceptions that occur during plugin loading
-                print(f"❌ Error loading plugin {module_name}: {e}")
+                logger.error(f"❌ Error loading plugin {module_name}: {e}")
 
     return command_handler  # Return the populated command handler

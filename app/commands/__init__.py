@@ -4,9 +4,12 @@ Command Handling System.
 This module defines an abstract base class (CLI) for commands and a CommandHandler
 to register and execute commands in the application.
 """
-
+import logging
 # Import ABC and abstractmethod to define an abstract base class for commands
 from abc import ABC, abstractmethod  
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 class CLI(ABC):
     """
@@ -41,6 +44,7 @@ class CommandHandler:
         Initializes a CommandHandler instance with an empty command dictionary.
         """
         self.commands = {}  # Dictionary to store registered commands
+        logger.info("CommandHandler initialized.")
 
     def register_command(self, command_name: str, command: CLI):
         """
@@ -52,6 +56,7 @@ class CommandHandler:
         command (CLI): An instance of a command class inheriting from CLI.
         """
         self.commands[command_name] = command  # Store the command in the dictionary
+        logger.info(f"Command registered: {command_name}")
 
     def execute_command(self, command_name: str):
         """
@@ -66,6 +71,8 @@ class CommandHandler:
         KeyError: If the command does not exist in the registry.
         """
         try:
+            logger.info(f"Executing command: {command_name}")
             self.commands[command_name].execute([])  # Execute command with empty argument list
         except KeyError:
+            logger.warning(f"No such command: {command_name}")
             print(f"No such command: {command_name}")  # Handle missing command gracefully

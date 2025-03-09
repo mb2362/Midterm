@@ -5,6 +5,9 @@ This module defines the `Calculations` class, which manages a history of arithme
 calculations, allowing users to add, retrieve, clear, and filter calculations based on the operation.
 """
 
+# Import logging
+import logging
+
 # Importing Decimal for precise floating-point arithmetic to avoid rounding errors.
 from decimal import Decimal  
 
@@ -13,6 +16,9 @@ from typing import Callable, List
 
 # Importing the Calculation class to manage individual arithmetic operations.
 from calculator.calculation import Calculation  
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 class Calculations:
     """
@@ -41,6 +47,7 @@ class Calculations:
         calculation (Calculation): The calculation instance to be stored in history.
         """
         cls.history.append(calculation)  # Add the calculation to the history list
+        logger.debug(f"Added calculation: {calculation}")
 
     @classmethod
     def get_history(cls) -> List[Calculation]:
@@ -51,6 +58,7 @@ class Calculations:
         --------
         List[Calculation]: A list of all Calculation instances stored in history.
         """
+        logger.debug(f"Retrieving full history. Total calculations: {len(cls.history)}")
         return cls.history  # Return the full history list
 
     @classmethod
@@ -61,6 +69,7 @@ class Calculations:
         This removes all stored Calculation instances, resetting the history.
         """
         cls.history.clear()  # Clear the entire history list
+        logger.debug("Cleared the calculation history.")
 
     @classmethod
     def get_latest(cls) -> Calculation:
@@ -73,7 +82,9 @@ class Calculations:
         None: If there is no calculation in history.
         """
         if cls.history:
+            logger.debug(f"Latest calculation: {cls.history[-1]}")
             return cls.history[-1]  # Return the last calculation in the history
+        logger.debug("No calculations found in history.")
         return None  # Return None if the history is empty
 
     @classmethod
@@ -89,5 +100,6 @@ class Calculations:
         --------
         List[Calculation]: A list of calculations that match the given operation name.
         """
-        return [calc for calc in cls.history if calc.operation.__name__ == operation_name]
-        # Return a list of calculations where the operation matches the specified name
+        matching_calculations = [calc for calc in cls.history if calc.operation.__name__ == operation_name]
+        logger.debug(f"Found {len(matching_calculations)} calculations for operation: {operation_name}")
+        return matching_calculations

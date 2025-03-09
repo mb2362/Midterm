@@ -7,6 +7,9 @@ The class performs the specified operation (addition, subtraction, multiplicatio
 and returns the result.
 """
 
+# Import logging
+import logging
+
 # Import Decimal for precise floating-point arithmetic, avoiding rounding errors
 from decimal import Decimal  
 
@@ -15,6 +18,9 @@ from typing import Callable
 
 # Import arithmetic operations from the calculator module
 from calculator.operations import add, subtract, multiply, divide  
+
+# Configure logger
+logger = logging.getLogger(__name__)
 
 class Calculation:
     """
@@ -46,6 +52,7 @@ class Calculation:
         self.a = a
         self.b = b
         self.operation = operation
+        logger.debug(f"Initialized Calculation with a={a}, b={b}, operation={operation.__name__}")
 
     @staticmethod    
     def create(a: Decimal, b: Decimal, operation: Callable[[Decimal, Decimal], Decimal]) -> "Calculation":
@@ -65,6 +72,7 @@ class Calculation:
         --------
         Calculation: A new `Calculation` instance with the provided parameters.
         """
+        logger.debug(f"Creating Calculation instance with a={a}, b={b}, operation={operation.__name__}")
         return Calculation(a, b, operation)
 
     def perform(self) -> Decimal:
@@ -78,7 +86,10 @@ class Calculation:
         --------
         Decimal: The result of applying the operation to `a` and `b`.
         """
-        return self.operation(self.a, self.b)
+        logger.debug(f"Performing calculation: {self.a} {self.operation.__name__} {self.b}")
+        result = self.operation(self.a, self.b)
+        logger.debug(f"Calculation result: {result}")
+        return result
 
     def __repr__(self) -> str:
         """
