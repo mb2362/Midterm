@@ -7,7 +7,7 @@ on:
   push:
     branches: [ "main","development","workflow","commands", "plugins", "logging", "env" ]
   pull_request:
-    branches: [ "main","development","workflow" ]
+    branches: [ "main","development","workflow","commands", "plugins", "logging", "env" ]
 
 permissions:
   contents: read
@@ -16,6 +16,11 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    env:
+      LOG_CONFIG_PATH: "logging.conf"
+      HISTORY_FILE: "history.csv"
+      LOG_FILE: "logs" 
 
     steps:
     - uses: actions/checkout@v3
