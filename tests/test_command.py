@@ -28,12 +28,17 @@ def test_app_start_menu_command():
         with pytest.raises(SystemExit):  # Exit after calling 'exit'
             app.start()
     # Verify that the menu command is recognized and outputs the correct menu
-    mock_print.assert_any_call("Available Commands:")
-    mock_print.assert_any_call("- add <a> <b>: Perform addition")  # Addition command info
-    mock_print.assert_any_call("- subtract <a> <b>: Perform subtraction")  # Subtraction command info
-    mock_print.assert_any_call("- multiply <a> <b>: Perform multiplication")  # Multiplication command info
-    mock_print.assert_any_call("- divide <a> <b>: Perform division")  # Division command info
-    mock_print.assert_any_call("- exit: Exit the application")  # Exit command info
+
+    mock_print.assert_any_call("Available Commands  : ")
+    mock_print.assert_any_call("- add <a> <b>       : Perform addition")                # Addition command info
+    mock_print.assert_any_call("- subtract <a> <b>  : Perform subtraction")             # Subtraction command info
+    mock_print.assert_any_call("- multiply <a> <b>  : Perform multiplication")          # Multiplication command info
+    mock_print.assert_any_call("- divide <a> <b>    : Perform division")                # Division command info
+    mock_print.assert_any_call("- history show      : View calculation history")        # View calculation history info
+    mock_print.assert_any_call("- history save      : Save history to file")            # Save history to file info
+    mock_print.assert_any_call("- history load      : Load history from file")          # Load history from file info
+    mock_print.assert_any_call("- history clear     : Clear history")                   # Clear history info
+    mock_print.assert_any_call("- exit              : Exit the application")            # Exit command info
 
 def test_app_invalid_command():
     """Test handling of an invalid command."""

@@ -8,6 +8,8 @@ calculations, allowing users to add, retrieve, clear, and filter calculations ba
 # Import logging
 import logging
 
+import pandas as pd
+
 # Importing Decimal for precise floating-point arithmetic to avoid rounding errors.
 from decimal import Decimal  
 
@@ -15,10 +17,15 @@ from decimal import Decimal
 from typing import Callable, List  
 
 # Importing the Calculation class to manage individual arithmetic operations.
+from calculator.operations import add, subtract, multiply, divide  
 from calculator.calculation import Calculation  
 
 # Configure logger
 logger = logging.getLogger(__name__)
+
+from app import App
+
+HISTORY_FILE = App().get_environment_variable('HISTORY_FILE')
 
 class Calculations:
     """
@@ -69,7 +76,10 @@ class Calculations:
         This removes all stored Calculation instances, resetting the history.
         """
         cls.history.clear()  # Clear the entire history list
+        df = pd.DataFrame(columns=["Operand1", "Operand2", "Operation", "Result"])
+        df.to_csv(HISTORY_FILE, index=False)
         logger.debug("Cleared the calculation history.")
+        print("History cleared.")
 
     @classmethod
     def get_latest(cls) -> Calculation:
@@ -103,3 +113,61 @@ class Calculations:
         matching_calculations = [calc for calc in cls.history if calc.operation.__name__ == operation_name]
         logger.debug(f"Found {len(matching_calculations)} calculations for operation: {operation_name}")
         return matching_calculations
+    
+    @classmethod
+    def save_history(cls):
+        """Save the calculation history to a CSV file."""
+        if cls.history:
+            data = [{
+                "Operand1": calc.a,
+                "Operand2": calc.b,
+                "Operation": calc.operation.__name__,  # Save operation name as string
+                "Result": calc.perform()
+            } for calc in cls.history]
+
+            df = pd.DataFrame(data)
+            df.to_csv(HISTORY_FILE, index=False)
+            print("History saved.")
+
+    @classmethod
+    def load_history(cls):
+        """Load calculation history from a CSV file."""
+        try:
+            df = pd.read_csv(HISTORY_FILE)
+            
+            # Clear the current history before loading from the file
+            cls.history.clear()
+
+            # Iterate over each row in the dataframe
+            for _, row in df.iterrows():
+                # Fetch operands and operation from CSV
+                operand1 = Decimal(row["Operand1"])
+                operand2 = Decimal(row["Operand2"])
+                operation_name = row["Operation"]
+
+                # Map operation name to the corresponding operation function
+                if operation_name == "add":
+                    operation = add
+                elif operation_name == "subtract":
+                    operation = subtract
+                elif operation_name == "multiply":
+                    operation = multiply
+                elif operation_name == "divide":
+                    operation = divide
+                else:
+                    logger.warning(f"Unknown operation '{operation_name}' in history file.")
+                    continue  # Skip if the operation is not recognized
+
+                # Create the Calculation instance and add it to the history
+                calculation = Calculation(operand1, operand2, operation)
+                cls.history.append(calculation)
+
+            print("History loaded successfully.")
+            logger.info(f"History loaded. Total calculations: {len(cls.history)}")
+
+        except FileNotFoundError:
+            print("No history file found.")
+            logger.warning("History file not found.")
+        except Exception as e:
+            print(f"Error loading history: {e}")
+            logger.error(f"Error loading history: {e}")

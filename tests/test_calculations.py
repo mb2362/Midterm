@@ -1,7 +1,9 @@
 '''Tests for Calculations.py'''
 
 # Import required modules
+from unittest.mock import patch, MagicMock
 from decimal import Decimal  # Import Decimal for precise arithmetic operations
+import pandas as pd
 import pytest  # Import pytest for unit testing framework
 
 # Import necessary classes and functions from the calculator module
@@ -97,3 +99,98 @@ def test_get_latest_with_empty_history():
     Calculations.clear_history()
     # Assert that the latest calculation is None when the history is empty
     assert Calculations.get_latest() is None, "Expected None for latest calculation with empty history"
+
+# History tests
+# Mock for Calculation object
+@pytest.fixture
+def mock_calculation():
+    """Fixture to create a mock Calculation object."""
+    mock_calc = MagicMock(spec=Calculation)
+    mock_calc.a = 2
+    mock_calc.b = 2
+    mock_calc.operation = add  # Setting operation to 'add'
+    mock_calc.operation.__name__ = "add"  # Ensure operation has a name
+    mock_calc.perform.return_value = 4  # Mock the result of perform() method
+    return mock_calc
+
+# Mock pandas functions
+@pytest.fixture
+def mock_calculations():
+    """Mock the Calculations class to simulate history actions."""
+    with patch("pandas.read_csv") as mock_read_csv, patch("pandas.DataFrame.to_csv") as mock_to_csv:
+        yield mock_read_csv, mock_to_csv
+
+# Test get_history - check if history is correctly returned
+def test_get_history_csv(mock_calculation, mock_calculations):
+    """Test the 'get_history' method of the Calculations class."""
+    mock_read_csv, _ = mock_calculations # pylint: disable=unused-variable
+
+    # Clear the history before adding a new calculation
+    Calculations.history.clear()
+
+    # Simulate adding a calculation to the history
+    Calculations.add_calculation(mock_calculation)
+
+    # Call get_history
+    history = Calculations.get_history()
+
+    # Assert the history has one calculation
+    assert len(history) == 1  # Now it should only contain the mock_calculation
+    assert history[0].a == 2
+    assert history[0].operation.__name__ == "add"
+
+# Test save_history - check if history is saved correctly
+def test_save_history(mock_calculation, mock_calculations, capsys):
+    """Test the 'save_history' method of the Calculations class."""
+    _, mock_to_csv = mock_calculations
+
+    # Add a calculation to the history
+    Calculations.add_calculation(mock_calculation)
+
+    # Call save_history
+    Calculations.save_history()
+
+    # Assert that to_csv was called to save the history
+    mock_to_csv.assert_called_once()
+
+    # Capture printed output
+    captured = capsys.readouterr()
+    assert "History saved." in captured.out
+
+# Test load_history - check if history is loaded correctly
+def test_load_history(mock_calculation, mock_calculations, capsys):
+    """Test the 'load_history' method of the Calculations class."""
+    mock_read_csv, _ = mock_calculations
+
+    # Mock the dataframe returned by read_csv
+    mock_read_csv.return_value = pd.DataFrame([{
+        "Operand1": 2, "Operand2": 2, "Operation": "add", "Result": 4
+    }])
+
+    # Call load_history to load mock data
+    Calculations.load_history()
+
+    # Capture printed output
+    captured = capsys.readouterr()
+    assert "History loaded successfully." in captured.out
+
+# Test clear_history - check if history is cleared correctly
+def test_clear_history_csv(mock_calculation, mock_calculations, capsys):
+    """Test the 'clear_history' method of the Calculations class."""
+    _, mock_to_csv = mock_calculations
+
+    # Add a calculation to the history
+    Calculations.add_calculation(mock_calculation)
+
+    # Call clear_history
+    Calculations.clear_history()
+
+    # Ensure history is cleared
+    assert len(Calculations.get_history()) == 0
+
+    # Verify that the history file was written with empty data
+    mock_to_csv.assert_called_once()
+
+    # Capture printed output
+    captured = capsys.readouterr()
+    assert "History cleared." in captured.out
