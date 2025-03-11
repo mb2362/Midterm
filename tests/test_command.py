@@ -7,6 +7,7 @@ missing arguments, and proper error handling during command execution.
 """
 
 from unittest.mock import patch
+# Import pytest for unit testing framework
 import pytest   # pylint: disable=unused-import
 from app import App
 from app.commands import CommandHandler, CLI

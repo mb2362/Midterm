@@ -1,5 +1,8 @@
 '''My Calculator Test'''
 
+# Import pytest for testing framework support
+import pytest # pylint: disable=unused-import
+
 # Import the Calculator class from the calculator module
 from calculator import Calculator
 

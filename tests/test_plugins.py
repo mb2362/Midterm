@@ -9,6 +9,7 @@ plugin loading, handling missing plugins, and error handling when a plugin fails
 """
 
 from unittest.mock import patch
+# Import pytest for unit testing framework
 import pytest   # pylint: disable=unused-import
 from app.commands import CommandHandler
 from app.plugins.history import historyCommand
