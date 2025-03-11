@@ -1,6 +1,3 @@
-
----
-
 # Advanced Python Calculator
 
 ## Overview
@@ -18,6 +15,18 @@ This project is an **Advanced Python-based Calculator** designed for a software 
 MIDTERM
 │── .github/                # GitHub workflows (if applicable)
 │── .pytest_cache/          # Pytest cache files
+│── app/                    # Application logic
+│   ├── __pycache__/
+│   ├── __init__.py
+│   ├── commands/           # CLI commands
+│   │   ├── __pycache__/
+│   │   ├── add/
+│   │   ├── divide/
+│   │   ├── exit/
+│   │   ├── menu/
+│   │   ├── multiply/
+│   │   ├── subtract/
+│   │   ├── __init__.py
 │── calculator/             # Core calculator logic
 │   ├── __pycache__/
 │   ├── __init__.py
@@ -30,11 +39,13 @@ MIDTERM
 │   ├── test_calculation.py  # Tests for single calculation logic
 │   ├── test_calculations.py # Tests for multiple calculations handling
 │   ├── test_calculator.py   # Tests for overall calculator
+│   ├── test_command.py      # Tests for CLI commands
 │   ├── test_operations.py   # Tests for operations functions
 │── venv/                   # Virtual environment
 │── .coverage               # Coverage report file
 │── .gitignore              # Git ignored files
 │── .pylintrc               # Pylint configuration for code linting
+│── main.py                 # Main entry point
 │── pytest.ini              # Pytest configuration
 │── README.md               # Project documentation
 │── requirements.txt        # Project dependencies
@@ -92,5 +103,3 @@ This project is for academic purposes only.
 
 ## Author
 **Monil Baxi**
-
----
