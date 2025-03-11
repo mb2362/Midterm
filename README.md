@@ -1,128 +1,142 @@
+# Advanced Python Calculator  
 
----
+## Overview  
+This project is an **Advanced Python-based Calculator** designed for a software engineering graduate course midterm. It follows professional software development practices, including clean code structure, modular design, comprehensive test coverage, and logging.  
 
-# Advanced Python Calculator
+## Features  
+- **Basic Arithmetic Operations**: Addition, Subtraction, Multiplication, Division  
+- **Advanced Calculation Management**: Tracks calculations using a structured approach  
+- **Test Coverage**: 95%+ test coverage using **Pytest**  
+- **Error Handling**: Graceful handling of exceptions like division by zero  
+- **Logging**: Implements structured logging for debugging and tracking calculations  
+- **Dynamically Loaded Logging Configuration**: Automatically ensures logging setup  
+- **Modular Design**: Separated concerns using `operations.py`, `calculation.py`, and `calculations.py`  
 
-## Overview
-This project is an **Advanced Python-based Calculator** designed for a software engineering graduate course midterm. It follows professional software development practices, including clean code structure, modular design, comprehensive test coverage, and logging.
-
-## Features
-- **Basic Arithmetic Operations**: Addition, Subtraction, Multiplication, Division
-- **Advanced Calculation Management**: Tracks calculations using a structured approach
-- **Test Coverage**: 95%+ test coverage using **Pytest**
-- **Error Handling**: Graceful handling of exceptions like division by zero
-- Logging: Implements structured logging for debugging and tracking calculations
-- **Modular Design**: Separated concerns using `operations.py`, `calculation.py`, and `calculations.py`
-
-## Project Structure
+## Project Structure  
 ```
-MIDTERM
-├── .github/workflows/          # GitHub Actions for CI/CD
-│   ├── python-app.yml          # Workflow configuration for automated testing
-├── .pytest_cache/              # Pytest cache directory
-├── app/                        # Main application directory
-│   ├── commands/               # Command-related modules
-│   │   ├── __init__.py
-│   ├── plugins/                # Plugins for arithmetic operations
-│   │   ├── add/
-│   │   │   ├── __init__.py
-│   │   ├── divide/
-│   │   │   ├── __init__.py
-│   │   ├── exit/
-│   │   │   ├── __init__.py
-│   │   ├── menu/
-│   │   │   ├── __init__.py
-│   │   ├── multiply/
-│   │   │   ├── __init__.py
-│   │   ├── subtract/
-│   │   │   ├── __init__.py
-│   │   ├── plugins_manager.py  # Manages plugins
-│   │   ├── __init__.py
-│   ├── calculator/             # Core calculation logic
-│   │   ├── __init__.py
-│   │   ├── calculation.py
-│   │   ├── calculations.py
-│   │   ├── operations.py
-├── logs/                       # Logging directory
-│   ├── app.log                 # Log file for application events
-├── tests/                      # Unit tests
-│   ├── __init__.py
-│   ├── test_calculation.py
-│   ├── test_calculations.py
-│   ├── test_calculator.py
-│   ├── test_command.py
-│   ├── test_operations.py
-│   ├── test_plugins.py
-├── venv/                       # Virtual environment directory
-├── .coverage                   # Code coverage report
-├── .gitignore                  # Git ignore file
-├── .pylintrc                   # Pylint configuration
-├── logging.conf                 # Logging configuration
-├── main.py                      # Entry point of the application
-├── pytest.ini                   # Pytest configuration
-├── README.md                    # Project documentation (this file)
-├── requirements.txt              # Python dependencies
+MIDTERM  
+├── .github/workflows/          # GitHub Actions for CI/CD  
+│   ├── python-app.yml          # Workflow configuration for automated testing  
+├── .pytest_cache/              # Pytest cache directory  
+├── app/                        # Main application directory  
+│   ├── commands/               # Command-related modules  
+│   │   ├── __init__.py  
+│   ├── plugins/                # Plugins for arithmetic operations  
+│   │   ├── add/  
+│   │   │   ├── __init__.py  
+│   │   ├── divide/  
+│   │   │   ├── __init__.py  
+│   │   ├── exit/  
+│   │   │   ├── __init__.py  
+│   │   ├── menu/  
+│   │   │   ├── __init__.py  
+│   │   ├── multiply/  
+│   │   │   ├── __init__.py  
+│   │   ├── subtract/  
+│   │   │   ├── __init__.py  
+│   │   ├── plugins_manager.py  # Manages plugins  
+│   │   ├── __init__.py  
+│   ├── calculator/             # Core calculation logic  
+│   │   ├── __init__.py  
+│   │   ├── calculation.py  
+│   │   ├── calculations.py  
+│   │   ├── operations.py  
+├── logs/                       # Logging directory  
+│   ├── app.log                 # Log file for application events  
+├── tests/                      # Unit tests  
+│   ├── __init__.py  
+│   ├── test_calculation.py  
+│   ├── test_calculations.py  
+│   ├── test_calculator.py  
+│   ├── test_command.py  
+│   ├── test_operations.py  
+│   ├── test_plugins.py  
+├── venv/                       # Virtual environment directory  
+├── .coverage                   # Code coverage report  
+├── .gitignore                  # Git ignore file  
+├── .pylintrc                   # Pylint configuration  
+├── logging.conf                 # Logging configuration  
+├── main.py                      # Entry point of the application  
+├── pytest.ini                   # Pytest configuration  
+├── README.md                    # Project documentation (this file)  
+├── requirements.txt              # Python dependencies  
+```  
 
-```
+## Installation  
 
-## Installation
+### 1. Clone the Repository  
+```sh  
+git clone https://github.com/mb2362/Midterm.git  
+cd MIDTERM  
+```  
 
-### 1. Clone the Repository
-```sh
-git clone https://github.com/mb2362/Midterm.git
-cd MIDTERM
-```
+### 2. Create a Virtual Environment  
+```sh  
+python3 -m venv venv  
+source venv/bin/activate  # On Windows use: venv\Scripts\activate  
+```  
 
-### 2. Create a Virtual Environment
-```sh
-python3 -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-```
+### 3. Install Dependencies  
+```sh  
+pip install -r requirements.txt  
+```  
 
-### 3. Install Dependencies
-```sh
-pip install -r requirements.txt
-```
+## Usage  
 
-## Usage
+### Running the Calculator  
+You can run the calculator in interactive mode via the command line:  
+```sh  
+python main.py 
+```  
 
-### Running the Calculator
-You can run the calculator in interactive mode via the command line:
-```sh
-python -m calculator
-```
+### Running Tests  
+Run the test suite to ensure the calculator functionality is working as expected:  
+```sh  
+pytest --cov=calculator tests/  
+```  
 
-### Running Tests
-Run the test suite to ensure the calculator functionality is working as expected:
-```sh
-pytest --cov=calculator tests/
-```
+## Logging  
 
-## Testing and Coverage
-- **Pytest** is used for unit testing in the `tests/` folder.
-- **Code coverage** is tracked using `pytest-cov`.
-- To check the coverage and generate reports:
-  ```sh
-  pytest --cov=calculator
-  ```
-- The **`.coverage`** file stores coverage reports and can be used for further analysis.
+This project implements structured logging to track operations, debug issues, and ensure smooth execution. Logs are recorded in both the console and a dedicated log file(logs/app.log):  
 
-## Logging
-The calculator includes structured logging for debugging and tracking calculations:
+- **INFO Logs**: Tracks operations performed (e.g., additions, subtractions).  
+- **WARNING Logs**: Captures potential issues, such as missing configuration files.  
+- **ERROR Logs**: Captures exceptions and invalid operations (e.g., division by zero).  
 
-INFO Logs: Tracks operations performed.
-ERROR Logs: Captures exceptions and invalid operations.
-Logs are written to the console and to a log file.
+### Dynamically Loading Logging Configuration  
 
-## Exception Handling
-This project implements **"Look Before You Leap" (LBYL)** and **"Easier to Ask for Forgiveness than Permission" (EAFP)** exception-handling strategies:
-- **LBYL**: Checks before division by zero.
-- **EAFP**: Uses try-except blocks to handle errors dynamically.
+```python  
+import os  
+import logging  
+import logging.config  
 
-## License
-This project is for academic purposes only.
+# Define log directory and config path  
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  
+LOG_CONFIG_PATH = os.path.join(BASE_DIR, "logging.conf")  
+LOG_DIR = os.path.join(BASE_DIR, "logs")  
 
-## Author
+# Ensure log directory exists  
+if not os.path.exists(LOG_DIR):  
+    os.makedirs(LOG_DIR)  
+
+# Load logging configuration  
+if os.path.exists(LOG_CONFIG_PATH):  
+    logging.config.fileConfig(LOG_CONFIG_PATH)  
+else:  
+    logging.basicConfig(level=logging.INFO)  
+    logging.warning(f"Logging configuration file '{LOG_CONFIG_PATH}' not found. Using default settings.")  
+
+logger = logging.getLogger(__name__)  
+logger.info("Logging is successfully set up.")  
+```  
+
+### Where Logging is Used  
+- **Calculator module**: Tracks calculations and operations.  
+- **Plugins**: Logs arithmetic operations and execution.  
+- **Application Initialization**: Ensures logging is configured correctly.  
+
+## License  
+This project is for academic purposes only.  
+
+## Author  
 **Monil Baxi**
-
----
