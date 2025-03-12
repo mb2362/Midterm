@@ -8,7 +8,7 @@ correct behavior of the plugin manager under various scenarios, including succes
 plugin loading, handling missing plugins, and error handling when a plugin fails to load.
 """
 
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 # Import pytest for unit testing framework
 import pytest   # pylint: disable=unused-import
 from app.commands import CommandHandler
@@ -60,7 +60,19 @@ def test_plugins_manager_error_handling():
 @pytest.fixture
 def mock_calculations():
     """Mock the Calculations class to simulate history actions."""
-    with patch.object(Calculations, 'get_history', return_value=["Calculation(2, 2, add)", "Calculation(5, 3, subtract)"]) as mock_get_history, \
+    mock_calc1 = MagicMock()
+    mock_calc1.a = 2
+    mock_calc1.b = 4
+    mock_calc1.operation = MagicMock(__name__="add")
+    mock_calc1.perform.return_value = 6  # Expected result of 2 + 4 = 6
+
+    mock_calc2 = MagicMock()
+    mock_calc2.a = 5
+    mock_calc2.b = 3
+    mock_calc2.operation = MagicMock(__name__="subtract")
+    mock_calc2.perform.return_value = 2  # Expected result of 5 - 3 = 2
+
+    with patch.object(Calculations, 'get_history', return_value=[mock_calc1, mock_calc2]) as mock_get_history, \
          patch.object(Calculations, 'save_history') as mock_save_history, \
          patch.object(Calculations, 'load_history') as mock_load_history, \
          patch.object(Calculations, 'clear_history') as mock_clear_history:
@@ -80,8 +92,8 @@ def test_show_history(mock_calculations, capsys):
 
     # Ensure the history is displayed correctly
     assert "📜 Calculation History:" in captured.out
-    assert "1. Calculation(2, 2, add)" in captured.out
-    assert "2. Calculation(5, 3, subtract)" in captured.out
+    assert "1. 2 add 4 equal to 6" in captured.out
+    assert "2. 5 subtract 3 equal to 2" in captured.out
 
     # Ensure get_history was called
     mock_get_history.assert_called_once()

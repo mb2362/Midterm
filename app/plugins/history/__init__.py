@@ -43,7 +43,7 @@ class historyCommand(CLI):
 
         print("\n📜 Calculation History:")
         for i, calc in enumerate(history, start=1):
-            print(f"{i}. {calc} ")
+            print(f"{i}. {calc.a} {calc.operation.__name__} {calc.b} equal to {calc.perform()}")
 
     def save_history(self):
         """Saves history to a CSV file."""
