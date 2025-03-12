@@ -1,12 +1,16 @@
 """
-Tests for calculation.py
+Tests for calculation.py.
+
+This module contains test cases to ensure that the Calculation class performs
+correctly for basic arithmetic operations (addition, subtraction, multiplication, and division).
 """
 
 # Import necessary modules for testing
-from decimal import Decimal  # Import Decimal for precise arithmetic operations
-import pytest  # Import pytest for testing framework support
+from decimal import Decimal  # Import Decimal for precise floating-point arithmetic
+# Import pytest for testing framework support
+import pytest
 
-# Import Calculation class and operation functions from calculator module
+# Import Calculation class and operation functions from the calculator module
 from calculator.calculation import Calculation
 from calculator.operations import add, subtract, multiply, divide
 
@@ -25,23 +29,32 @@ def test_calculation_operations(a, b, operation, expected):
     """
     Test calculation operations with various inputs.
 
-    This test ensures that the Calculation class correctly performs
-    different arithmetic operations (addition, subtraction, multiplication, and division)
+    This test ensures that the Calculation class correctly performs different
+    arithmetic operations (addition, subtraction, multiplication, and division)
     using the provided input values.
+
+    Parameters:
+    -----------
+    a (Decimal): The first operand for the operation.
+    b (Decimal): The second operand for the operation.
+    operation (Callable[[Decimal, Decimal], Decimal]): The operation function (add, subtract, etc.)
+    expected (Decimal): The expected result after performing the operation.
     """
     calc = Calculation(a, b, operation)  # Create a Calculation instance with given values
-    assert calc.perform() == expected, f"Failed {operation.__name__} operation with {a} and {b}"  # Verify the result
+    result = calc.perform()  # Perform the calculation
+    assert result == expected, f"Failed {operation.__name__} operation with {a} and {b}. Expected {expected}, got {result}."  # Verify the result
 
 def test_calculation_repr():
     """
     Test the string representation (__repr__) of the Calculation class.
 
-    Ensures that the __repr__ method correctly formats the string representation
+    This test ensures that the __repr__ method correctly formats the string representation
     of the Calculation instance.
     """
     calc = Calculation(Decimal('10'), Decimal('5'), add)  # Create a Calculation instance for testing
     expected_repr = "Calculation(10, 5, add)"  # Define the expected string representation
-    assert calc.__repr__() == expected_repr, "The __repr__ method output does not match the expected string."  # Verify correctness
+    actual_repr = calc.__repr__()  # Get the actual string representation
+    assert actual_repr == expected_repr, f"The __repr__ method output does not match the expected string. Got: {actual_repr}, Expected: {expected_repr}"
 
 def test_divide_by_zero():
     """
