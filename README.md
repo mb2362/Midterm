@@ -63,6 +63,125 @@ MIDTERM
 ├── requirements.txt              # Python dependencies
 ```
 
+## Installation
+
+### 1. Clone the Repository
+```sh
+git clone https://github.com/mb2362/Midterm.git
+cd MIDTERM
+```
+
+### 2. Create a Virtual Environment
+```sh
+python3 -m venv venv
+source venv/bin/activate  # On Windows use: venv\Scripts\activate
+```
+
+### 3. Install Dependencies
+```sh
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Running the Calculator
+You can run the calculator in interactive mode via the command line:
+```sh
+python main.py
+```
+## Output After Running Calculator
+```sh
+(venv) monil@MONILBAXI23:~/midterm$ python main.py
+2025-03-12 05:30:22,044 - app - INFO - Logging is successfully set up.
+2025-03-12 05:30:22,045 - app - INFO - Initializing application and loading plugins.
+2025-03-12 05:30:22,079 - root - INFO - Environment variables loaded.
+Type 'exit' to exit or 'menu' to enter menu section.
+>>> menu
+Available Commands  :
+- add <a> <b>       : Perform addition
+- subtract <a> <b>  : Perform subtraction
+- multiply <a> <b>  : Perform multiplication
+- divide <a> <b>    : Perform division
+- history show      : View calculation history
+- history save      : Save history to file
+- history load      : Load history from file
+- history clear     : Clear history
+- exit              : Exit the application
+>>> add 2 3
+2025-03-12 05:30:36,235 - root - INFO - Addition operation performed: 2.0 + 3.0 = 5.0
+The result of 2 + 3 is equal to 5.0
+>>> subtract 4 1
+2025-03-12 05:30:40,668 - app.plugins.subtract - INFO - Subtraction operation performed: 4.0 - 1.0 = 3.0
+The result of 4 - 1 is equal to 3.0
+>>> multiply 2 4
+2025-03-12 05:30:45,524 - app.plugins.multiply - INFO - Multiplication operation performed: 2.0 x 4.0 = 8.0
+The result of 2 x 4 is equal to 8.0
+>>> divide 3 1
+2025-03-12 05:30:50,236 - app.plugins.divide - INFO - Division operation performed: 3.0 / 1.0 = 3.0
+The result of 3 / 1 is equal to 3.0
+>>> history show
+
+📜 Calculation History:
+1. 2.0 add 3.0 equal to 5.0
+2. 4.0 subtract 1.0 equal to 3.0
+3. 2.0 multiply 4.0 equal to 8.0
+4. 3.0 divide 1.0 equal to 3.0
+>>> history save
+History saved.
+✅ History saved successfully.
+>>> history load
+History loaded successfully.
+✅ History loaded successfully.
+>>> history show
+
+📜 Calculation History:
+1. 2 add 3 equal to 5
+2. 4 subtract 1 equal to 3
+3. 2 multiply 4 equal to 8
+4. 3 divide 1 equal to 3
+>>> exit
+Exiting...
+Exiting...
+```
+
+### Running Tests
+Run the test suite to ensure the calculator functionality is working as expected:
+```sh
+pytest --cov=calculator tests/
+```
+
+## Testing and Coverage
+- **Pytest** is used for unit testing in the `tests/` folder.
+- **Code coverage** is tracked using `pytest-cov`.
+- To check the coverage and generate reports:
+  ```sh
+  pytest --cov=calculator
+  ```
+- The **`.coverage`** file stores coverage reports and can be used for further analysis.
+
+## Design Patterns Used
+
+This project follows professional software development practices and incorporates **design patterns** to enhance maintainability, modularity, and scalability. Below are the key design patterns used:
+
+### 1. **Factory Pattern** (Used in `plugins_manager.py`)
+   - The **Factory Pattern** is used to dynamically load arithmetic operations as plugins. This ensures a flexible and extensible system where new operations can be added without modifying core logic.
+   - **Implementation:** [plugins/plugins_manager.py](./app/plugins/plugins_manager.py)
+
+### 2. **Singleton Pattern** (Used in `App` for Logging)
+   - The **Singleton Pattern** is used to ensure only a single instance of the logging configuration exists throughout the application lifecycle, preventing redundant log handlers.
+   - **Implementation:** [app.py](./app/app.py)
+
+### 3. **Command Pattern** (Used in `commands/`)
+   - The **Command Pattern** is applied to separate operations (addition, subtraction, history tracking, etc.) into modular commands. This allows easy extension and decouples calculation logic from command execution.
+   - **Implementation:** [commands](./app/commands/)
+
+### 4. **Strategy Pattern** (Used in `operations.py`)
+   - The **Strategy Pattern** allows dynamically selecting arithmetic operations at runtime. It enables efficient handling of different mathematical operations without hardcoded conditionals.
+   - **Implementation:** [calculator/operations.py](./app/calculator/operations.py)
+
+These design patterns contribute to the robustness and scalability of the **Advanced Python Calculator**, ensuring that it adheres to software engineering best practices.
+
+
 ## Environment Variables Usage
 
 This project uses environment variables to manage configuration settings securely and flexibly. Environment variables are stored in a `.env` file and loaded using `python-dotenv`.
@@ -128,54 +247,47 @@ HISTORY_FILE = App().get_environment_variable('HISTORY_FILE')
 
 By using this approach, we ensure that configuration settings are managed efficiently and securely without hardcoding them into the codebase.
 
-## Installation
 
-### 1. Clone the Repository
-```sh
-git clone https://github.com/mb2362/Midterm.git
-cd MIDTERM
-```
+## Logging  
 
-### 2. Create a Virtual Environment
-```sh
-python3 -m venv venv
-source venv/bin/activate  # On Windows use: venv\Scripts\activate
-```
+This project implements structured logging to track operations, debug issues, and ensure smooth execution. Logs are recorded in both the console and a dedicated log file(logs/app.log):  
 
-### 3. Install Dependencies
-```sh
-pip install -r requirements.txt
-```
+- **INFO Logs**: Tracks operations performed (e.g., additions, subtractions).  
+- **WARNING Logs**: Captures potential issues, such as missing configuration files.  
+- **ERROR Logs**: Captures exceptions and invalid operations (e.g., division by zero).  
 
-## Usage
+### Dynamically Loading Logging Configuration  
 
-### Running the Calculator
-You can run the calculator in interactive mode via the command line:
-```sh
-python main.py
-```
+```python  
+import os  
+import logging  
+import logging.config  
 
-### Running Tests
-Run the test suite to ensure the calculator functionality is working as expected:
-```sh
-pytest --cov=calculator tests/
-```
+# Define log directory and config path  
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  
+LOG_CONFIG_PATH = os.path.join(BASE_DIR, "logging.conf")  
+LOG_DIR = os.path.join(BASE_DIR, "logs")  
 
-## Testing and Coverage
-- **Pytest** is used for unit testing in the `tests/` folder.
-- **Code coverage** is tracked using `pytest-cov`.
-- To check the coverage and generate reports:
-  ```sh
-  pytest --cov=calculator
-  ```
-- The **`.coverage`** file stores coverage reports and can be used for further analysis.
+# Ensure log directory exists  
+if not os.path.exists(LOG_DIR):  
+    os.makedirs(LOG_DIR)  
 
-## Logging
-The calculator includes structured logging for debugging and tracking calculations:
+# Load logging configuration  
+if os.path.exists(LOG_CONFIG_PATH):  
+    logging.config.fileConfig(LOG_CONFIG_PATH)  
+else:  
+    logging.basicConfig(level=logging.INFO)  
+    logging.warning(f"Logging configuration file '{LOG_CONFIG_PATH}' not found. Using default settings.")  
 
-INFO Logs: Tracks operations performed.
-ERROR Logs: Captures exceptions and invalid operations.
-Logs are written to the console and to a log file.
+logger = logging.getLogger(__name__)  
+logger.info("Logging is successfully set up.")  
+```  
+
+### Where Logging is Used  
+- **Calculator module**: Tracks calculations and operations.  
+- **Plugins**: Logs arithmetic operations and execution.  
+- **Application Initialization**: Ensures logging is configured correctly.
+
 
 ## Exception Handling
 This project implements **"Look Before You Leap" (LBYL)** and **"Easier to Ask for Forgiveness than Permission" (EAFP)** exception-handling strategies:
